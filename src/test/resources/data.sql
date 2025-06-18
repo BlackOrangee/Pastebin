@@ -1,13 +1,12 @@
 
 INSERT INTO `Users` (`username`, `password`)
 VALUES (
-        'user1',
-        'password1'
+        'userName',
+        'password'
        );
 
-INSERT INTO `Boards` (id, name, content, creator, created, last_change, expires)
-VALUES (1,
-        'name',
+INSERT INTO `Boards` (name, content, creator, created, last_change, expires)
+VALUES ('default board name',
         'content',
         1,
         now(),

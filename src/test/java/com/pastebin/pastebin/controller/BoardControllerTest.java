@@ -14,9 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -30,15 +27,23 @@ class BoardControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public static final String BOARD_NAME = "boardName";
+    public static final String DEFAULT_BOARD_NAME = "default board name";
+    public static final String CONTENT = "content";
+    public static final String EXPIRES = "30-06-2025";
+    public static final String CONTROLLER_PATH = "/api/v1/board";
+    public static final String USER_PATH_PARAM = "userId=";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String DEFAULT_USER_NAME = "userName";
 
 
     @Test
     void createBoardTest() {
         long userId = 1L;
         BoardRequestDTO boardRequestDTO = BoardRequestDTO.builder()
-                .name("name")
-                .content("content")
-                .expires("30-05-2025")
+                .name(BOARD_NAME)
+                .content(CONTENT)
+                .expires(EXPIRES)
                 .build();
 
         String json = null;
@@ -52,8 +57,8 @@ class BoardControllerTest {
         try {
             assert json != null;
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.post("/api/v1/board?userId=" + userId)
-                            .contentType("application/json")
+                    MockMvcRequestBuilders.post(CONTROLLER_PATH + "?" + USER_PATH_PARAM + userId)
+                            .contentType(APPLICATION_JSON)
                             .content(json)
             ).andReturn();
         } catch (Exception e) {
@@ -69,8 +74,8 @@ class BoardControllerTest {
         }
 
         assertNotNull(boardDTO);
-        assertEquals("name", boardDTO.getName());
-        assertEquals("content", boardDTO.getContent());
+        assertEquals(BOARD_NAME, boardDTO.getName());
+        assertEquals(CONTENT, boardDTO.getContent());
     }
 
     @Test
@@ -80,8 +85,8 @@ class BoardControllerTest {
         MvcResult result = null;
         try {
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.get("/api/v1/board/" + boardId)
-                            .contentType("application/json")
+                    MockMvcRequestBuilders.get(CONTROLLER_PATH + "/" + boardId)
+                            .contentType(APPLICATION_JSON)
             ).andReturn();
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,12 +102,12 @@ class BoardControllerTest {
 
         UserDTO expectedCreator = UserDTO.builder()
                 .id(1L)
-                .username("user1")
+                .username(DEFAULT_USER_NAME)
                 .build();
 
         assertNotNull(boardDTO);
-        assertEquals("name", boardDTO.getName());
-        assertEquals("content", boardDTO.getContent());
+        assertEquals(DEFAULT_BOARD_NAME, boardDTO.getName());
+        assertEquals(CONTENT, boardDTO.getContent());
         assertEquals(expectedCreator, boardDTO.getCreator());
     }
 
@@ -116,7 +121,7 @@ class BoardControllerTest {
         MvcResult result = null;
         try {
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.put("/api/v1/board/" + boardId + "?userId=" + userId)
+                    MockMvcRequestBuilders.put(CONTROLLER_PATH + "/" + boardId + "?" + USER_PATH_PARAM + userId)
                             .contentType("text/plain")
                             .content(text)
             ).andReturn();
@@ -134,7 +139,7 @@ class BoardControllerTest {
 
         UserDTO userDTO = UserDTO.builder()
                 .id(userId)
-                .username("user1")
+                .username(DEFAULT_USER_NAME)
                 .build();
 
         SignDTO expectedSignDTO = SignDTO.builder()
@@ -147,7 +152,7 @@ class BoardControllerTest {
                 .build();
 
         BoardDTO expectedBoardDTO = BoardDTO.builder()
-                .name("name")
+                .name(DEFAULT_BOARD_NAME)
                 .content("text")
                 .creator(userDTO)
                 .signs(null)

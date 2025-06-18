@@ -52,11 +52,11 @@ class BoardServiceImplTest {
 
     private static final String CHANGED_CONTENT = "changed " + CONTENT;
 
-    private static final Date CREATED_FORMATED_DATE = DateFormatter.format("30-05-2025");
+    private static final Date CREATED_FORMATED_DATE = DateFormatter.format("30-06-2025");
 
-    private static final Date EXPIRES_FORMATED_DATE = DateFormatter.format("31-05-2025");
+    private static final Date EXPIRES_FORMATED_DATE = DateFormatter.format("31-06-2025");
 
-    private static final String EXPIRES_DATE_STRING = "30-05-2025";
+    private static final String EXPIRES_DATE_STRING = "30-06-2025";
 
     private static final User USER = User.builder()
             .id(USER_ID)

@@ -28,10 +28,13 @@ class UserServiceImplTest {
 
     private static final String USERNAME = "username";
 
+    public static final String PASSWORD = "password";
+
+
     private static final User USER = User.builder()
             .id(USER_ID)
             .username(USERNAME)
-            .password("password")
+            .password(PASSWORD)
             .build();
 
     private AutoCloseable closeable;
@@ -54,7 +57,7 @@ class UserServiceImplTest {
     void createUserTest() {
         UserRequestDTO userRequestDTO = UserRequestDTO.builder()
                 .username(USERNAME)
-                .password("password")
+                .password(PASSWORD)
                 .build();
 
         Mockito.when(userRepository.findByUsername(USERNAME)).thenReturn(Optional.empty());
@@ -84,7 +87,7 @@ class UserServiceImplTest {
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
         UserRequestDTO userRequestDTO = UserRequestDTO.builder()
                 .username(USERNAME)
-                .password("password")
+                .password(PASSWORD)
                 .build();
 
         UserDTO userDTO = userService.updateUser(USER_ID, userRequestDTO);

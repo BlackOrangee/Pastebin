@@ -25,11 +25,18 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    public static final String DEFAULT_USER_USERNAME = "userName";
+    public static final String NEW_USER_USERNAME = "username";
+    public static final String UPDATED_USER_USERNAME = "updatedUserName";
+    public static final String PASSWORD = "password";
+    public static final String CONTROLLER_PATH = "/api/v1/user";
+    public static final String APPLICATION_JSON = "application/json";
+
     @Test
     void registerTest() {
         UserRequestDTO userRequestDTO = UserRequestDTO.builder()
-                .username("username")
-                .password("password")
+                .username(NEW_USER_USERNAME)
+                .password(PASSWORD)
                 .build();
 
         String json = null;
@@ -43,8 +50,8 @@ class UserControllerTest {
         try {
             assert json != null;
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.post("/api/v1/user")
-                            .contentType("application/json")
+                    MockMvcRequestBuilders.post(CONTROLLER_PATH)
+                            .contentType(APPLICATION_JSON)
                             .content(json)
             ).andReturn();
         } catch (Exception e) {
@@ -61,7 +68,7 @@ class UserControllerTest {
 
         assertNotNull(userDTO);
         assertEquals(2L, userDTO.getId());
-        assertEquals("username", userDTO.getUsername());
+        assertEquals(NEW_USER_USERNAME, userDTO.getUsername());
     }
 
     @Test
@@ -69,8 +76,8 @@ class UserControllerTest {
         MvcResult result = null;
         try {
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.get("/api/v1/user/1")
-                            .contentType("application/json")
+                    MockMvcRequestBuilders.get(CONTROLLER_PATH+ "/1")
+                            .contentType(APPLICATION_JSON)
             ).andReturn();
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,14 +93,14 @@ class UserControllerTest {
 
         assertNotNull(userDTO);
         assertEquals(1L, userDTO.getId());
-        assertEquals("user1", userDTO.getUsername());
+        assertEquals(DEFAULT_USER_USERNAME, userDTO.getUsername());
     }
 
     @Test
     void updateUserTest() {
         UserRequestDTO userRequestDTO = UserRequestDTO.builder()
-                .username("username2")
-                .password("password1")
+                .username(UPDATED_USER_USERNAME)
+                .password(PASSWORD)
                 .build();
 
         String json = null;
@@ -107,8 +114,8 @@ class UserControllerTest {
         try {
             assert json != null;
             result = mockMvc.perform(
-                    MockMvcRequestBuilders.put("/api/v1/user/1")
-                            .contentType("application/json")
+                    MockMvcRequestBuilders.put(CONTROLLER_PATH + "/1")
+                            .contentType(APPLICATION_JSON)
                             .content(json)
             ).andReturn();
         } catch (Exception e) {
@@ -124,7 +131,6 @@ class UserControllerTest {
         }
 
         assertNotNull(userDTO);
-//        assertEquals(1L, userDTO.getId());
-        assertEquals("username2", userDTO.getUsername());
+        assertEquals(UPDATED_USER_USERNAME, userDTO.getUsername());
     }
 }
