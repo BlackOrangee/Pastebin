@@ -1,13 +1,23 @@
 services:
-  mysql:
-    image: 'mysql:latest'
+#  mysql:
+#    image: 'mysql:latest'
+#    environment:
+#      - 'MYSQL_DATABASE=pastebin'
+#      - 'MYSQL_ROOT_PASSWORD=verysecret'
+#      - 'MYSQL_USER=myuser'
+#      - 'MYSQL_PASSWORD=secret'
+#    ports:
+#      - '3306:3306'
+#
+  oracle-xe:
+    image: 'gvenzl/oracle-xe:latest'
     environment:
-      - 'MYSQL_DATABASE=pastebin'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      - 'ORACLE_DATABASE=pastebin'
+      - 'ORACLE_PASSWORD=verysecret'
+      - 'APP_USER=myuser'
+      - 'APP_USER_PASSWORD=secret'
     ports:
-      - '3306:3306'
+      - '1521:1521'
 
   pastebin:
     build:
@@ -16,4 +26,5 @@ services:
     ports:
       - '8080:8080'
     depends_on:
-      - mysql
+#      - mysql
+      - oracle-xe
